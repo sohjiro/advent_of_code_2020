@@ -1,0 +1,2 @@
+defmodule AdventOfCode2021.PasswordPhilosofy do
+end
