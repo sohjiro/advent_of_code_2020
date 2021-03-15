@@ -52,6 +52,14 @@ defmodule AdventOfCode2021 do
     |> AdventOfCode2021.CustomCustoms.process()
   end
 
+  def run_day_six_two(input_path \\ "day_06_input.txt") do
+    @resources
+    |> Path.join(input_path)
+    |> read_file()
+    |> parse()
+    |> AdventOfCode2021.CustomCustoms.process_two()
+  end
+
   defp read_file(input_path) do
     File.read!(input_path)
   end
