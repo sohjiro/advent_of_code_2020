@@ -33,6 +33,16 @@ defmodule AdventOfCode2021.PasswordPhilosofyTest do
     |> validate_result(2)
   end
 
+  test "valid passwords for second day" do
+    basic_input()
+    |> PasswordPhilosofy.convert_into_rules()
+    |> validate_result(expected())
+    |> PasswordPhilosofy.apply_new_rules()
+    |> validate_result(expected_new_rules())
+    |> PasswordPhilosofy.total_of_valid_passwords()
+    |> validate_result(1)
+  end
+
   defp basic_input do
     ["1-3 a: abcde", "1-3 b: cdefg", "2-9 c: ccccccccc"]
   end
@@ -53,6 +63,13 @@ defmodule AdventOfCode2021.PasswordPhilosofyTest do
     ]
   end
 
+  defp expected_new_rules do
+    [
+      {true, {1, 3, ?a, 'abcde'}},
+      {false, {1, 3, ?b, 'cdefg'}},
+      {false, {2, 9, ?c, 'ccccccccc'}}
+    ]
+  end
 
   defp validate_result(result, expected) do
     assert expected == result

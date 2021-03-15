@@ -7,6 +7,13 @@ defmodule AdventOfCode2021.PasswordPhilosofy do
     |> total_of_valid_passwords()
   end
 
+  def process_two(text) do
+    text
+    |> convert_into_rules()
+    |> apply_new_rules()
+    |> total_of_valid_passwords()
+  end
+
   def convert_into_rules(data) do
     Enum.map(data, &extract_info/1)
   end
@@ -23,6 +30,13 @@ defmodule AdventOfCode2021.PasswordPhilosofy do
     Enum.map(rules, fn(rule) ->
       {valid_rule?(rule), rule}
     end)
+  end
+
+  def apply_new_rules(rules) do
+    Enum.map(rules, fn(rule) ->
+      {valid_new_rule?(rule), rule}
+    end)
+
   end
 
   def total_of_valid_passwords(data) do
@@ -46,6 +60,17 @@ defmodule AdventOfCode2021.PasswordPhilosofy do
 
   defp valid_rule?({min, max, char, password}) do
     count_coincidences_for(password, char) in min..max
+  end
+
+  defp valid_new_rule?({first, second, char, password}) do
+    first_char = Enum.at(password, first - 1)
+    second_char = Enum.at(password, second - 1)
+
+    case {first_char == char, second_char == char} do
+      {true, false} -> true
+      {false, true} -> true
+      _ -> false
+    end
   end
 
   defp count_coincidences_for(password, char) do
