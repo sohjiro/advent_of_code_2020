@@ -2,6 +2,10 @@ defmodule AdventOfCode2021.BinaryBoarding do
   @start 0
   @rows 127
   @cols 7
+  @row_len 7
+  @col_len 3
+  @upper_half [?B, ?R]
+  @lower_half [?F, ?L]
 
   def compute_rows(list) do
     Enum.map(list, &add_row_number/1)
@@ -21,49 +25,33 @@ defmodule AdventOfCode2021.BinaryBoarding do
 
   defp row_seat(seat_information) do
     seat_information
-    |> get_row_information()
-    |> to_charlist()
-    |> get_row_number(@start, @rows)
+    |> get_information(@start, @row_len)
+    |> get_number(@start, @rows)
   end
 
   defp col_seat(seat_information) do
     seat_information
-    |> get_col_information()
+    |> get_information(@row_len, @col_len)
+    |> get_number(@start, @cols)
+  end
+
+  defp get_information(seat_information, start, len) do
+    seat_information
+    |> split_infomation(start, len)
     |> to_charlist()
-    |> get_col_number(@start, @cols)
   end
 
-  defp get_row_information(seat_information) do
-    split_infomation(seat_information, 0, 7)
-  end
+  defp get_number([], number, number), do: number
 
-  defp get_col_information(seat_information) do
-    split_infomation(seat_information, 7, 10)
-  end
+  defp get_number([h | t], lower, upper) do
+    number = (lower + upper) / 2
 
-  defp get_row_number([], number, number), do: number
+    cond do
+      h in @lower_half ->
+        get_number(t, lower, trunc(number))
 
-  defp get_row_number([h | t], first, last) do
-    number = (first + last) / 2
-    case h do
-      ?F ->
-        get_row_number(t, first, trunc(number))
-
-      ?B ->
-        get_row_number(t, round(number), last)
-    end
-  end
-
-  defp get_col_number([], number, number), do: number
-
-  defp get_col_number([h | t], first, last) do
-    number = (first + last) / 2
-    case h do
-      ?L ->
-        get_col_number(t, first, trunc(number))
-
-      ?R ->
-        get_col_number(t, round(number), last)
+      h in @upper_half ->
+        get_number(t, round(number), upper)
     end
   end
 

@@ -8,7 +8,7 @@ defmodule AdventOfCode2021.ReportRepairTest do
     |> validate_result(expected_rows())
   end
 
-  test "get cols from the seat informatio" do
+  test "get cols from the seat information" do
     input()
     |> BinaryBoarding.compute_rows()
     |> validate_result(expected_rows())
