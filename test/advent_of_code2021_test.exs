@@ -1,5 +1,5 @@
-defmodule AdventOfCode2021Test do
+defmodule AdventOfCode2020Test do
   use ExUnit.Case
-  doctest AdventOfCode2021
+  doctest AdventOfCode2020
 
 end

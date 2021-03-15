@@ -1,6 +1,6 @@
-defmodule AdventOfCode2021.ReportRepairTest do
+defmodule AdventOfCode2020.ReportRepairTest do
   use ExUnit.Case
-  alias AdventOfCode2021.ReportRepair
+  alias AdventOfCode2020.ReportRepair
 
   test "create tuple from inputs" do
     input()

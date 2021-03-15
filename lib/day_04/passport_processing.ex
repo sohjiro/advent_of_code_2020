@@ -1,4 +1,4 @@
-defmodule AdventOfCode2021.PassportProcessing do
+defmodule AdventOfCode2020.PassportProcessing do
   @keys_length 7
   @year_exp ~r/^[[:digit:]]{4}$/
   @pid_exp ~r/^[[:digit:]]{9}$/

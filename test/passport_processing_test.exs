@@ -1,6 +1,6 @@
-defmodule AdventOfCode2021.PassportProcessingTest do
+defmodule AdventOfCode2020.PassportProcessingTest do
   use ExUnit.Case
-  alias AdventOfCode2021.PassportProcessing
+  alias AdventOfCode2020.PassportProcessing
 
   test "group passports information" do
     input()

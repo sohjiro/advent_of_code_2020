@@ -1,6 +1,6 @@
-defmodule AdventOfCode2021 do
+defmodule AdventOfCode2020 do
   @moduledoc """
-  Documentation for `AdventOfCode2021`.
+  Documentation for `AdventOfCode2020`.
   """
   @resources "lib/resources"
 
@@ -9,7 +9,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse(trim: true)
-    |> AdventOfCode2021.ReportRepair.process()
+    |> AdventOfCode2020.ReportRepair.process()
   end
 
   def run_day_one_two(input_path \\ "day_01_input.txt") do
@@ -17,7 +17,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse(trim: true)
-    |> AdventOfCode2021.ReportRepair.process_two()
+    |> AdventOfCode2020.ReportRepair.process_two()
   end
 
   def run_day_two_one(input_path \\ "day_02_input.txt") do
@@ -25,7 +25,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse(trim: true)
-    |> AdventOfCode2021.PasswordPhilosofy.process()
+    |> AdventOfCode2020.PasswordPhilosofy.process()
   end
 
   def run_day_two_two(input_path \\ "day_02_input.txt") do
@@ -33,7 +33,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse(trim: true)
-    |> AdventOfCode2021.PasswordPhilosofy.process_two()
+    |> AdventOfCode2020.PasswordPhilosofy.process_two()
   end
 
   def run_day_three_one(input_path \\ "day_03_input.txt") do
@@ -41,7 +41,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse(trim: true)
-    |> AdventOfCode2021.TobogganTrajectory.process()
+    |> AdventOfCode2020.TobogganTrajectory.process()
   end
 
   def run_day_three_two(input_path \\ "day_03_input.txt") do
@@ -49,7 +49,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse(trim: true)
-    |> AdventOfCode2021.TobogganTrajectory.process_two()
+    |> AdventOfCode2020.TobogganTrajectory.process_two()
   end
 
   def run_day_four_one(input_path \\ "day_04_input.txt") do
@@ -57,7 +57,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse()
-    |> AdventOfCode2021.PassportProcessing.process()
+    |> AdventOfCode2020.PassportProcessing.process()
   end
 
   def run_day_four_two(input_path \\ "day_04_input.txt") do
@@ -65,7 +65,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse()
-    |> AdventOfCode2021.PassportProcessing.process_two()
+    |> AdventOfCode2020.PassportProcessing.process_two()
   end
 
   def run_day_five_one(input_path \\ "day_05_input.txt") do
@@ -73,7 +73,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse(trim: true)
-    |> AdventOfCode2021.BinaryBoarding.process()
+    |> AdventOfCode2020.BinaryBoarding.process()
   end
 
   def run_day_five_two(input_path \\ "day_05_input.txt") do
@@ -81,7 +81,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse(trim: true)
-    |> AdventOfCode2021.BinaryBoarding.process_two()
+    |> AdventOfCode2020.BinaryBoarding.process_two()
   end
 
   def run_day_six_one(input_path \\ "day_06_input.txt") do
@@ -89,7 +89,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse()
-    |> AdventOfCode2021.CustomCustoms.process()
+    |> AdventOfCode2020.CustomCustoms.process()
   end
 
   def run_day_six_two(input_path \\ "day_06_input.txt") do
@@ -97,7 +97,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse()
-    |> AdventOfCode2021.CustomCustoms.process_two()
+    |> AdventOfCode2020.CustomCustoms.process_two()
   end
 
   defp read_file(input_path) do

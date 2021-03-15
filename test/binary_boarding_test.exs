@@ -1,6 +1,6 @@
-defmodule AdventOfCode2021.BinaryBoardingTest do
+defmodule AdventOfCode2020.BinaryBoardingTest do
   use ExUnit.Case
-  alias AdventOfCode2021.BinaryBoarding
+  alias AdventOfCode2020.BinaryBoarding
 
   test "get rows from the seat infomation" do
     input()

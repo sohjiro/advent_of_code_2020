@@ -1,4 +1,4 @@
-defmodule AdventOfCode2021.PasswordPhilosofy do
+defmodule AdventOfCode2020.PasswordPhilosofy do
 
   def process(text) do
     text

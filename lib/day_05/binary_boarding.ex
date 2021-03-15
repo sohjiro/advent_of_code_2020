@@ -1,4 +1,4 @@
-defmodule AdventOfCode2021.BinaryBoarding do
+defmodule AdventOfCode2020.BinaryBoarding do
   @start 0
   @rows 127
   @cols 7

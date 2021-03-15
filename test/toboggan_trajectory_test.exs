@@ -1,6 +1,6 @@
-defmodule AdventOfCode2021.TobogganTrajectoryTest do
+defmodule AdventOfCode2020.TobogganTrajectoryTest do
   use ExUnit.Case
-  alias AdventOfCode2021.TobogganTrajectory
+  alias AdventOfCode2020.TobogganTrajectory
 
   test "should calculate the coordinates for a given input" do
     basic_input()

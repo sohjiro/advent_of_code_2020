@@ -1,4 +1,4 @@
-defmodule AdventOfCode2021.ReportRepair do
+defmodule AdventOfCode2020.ReportRepair do
   @tuple_size 2
   @default_result 2020
 

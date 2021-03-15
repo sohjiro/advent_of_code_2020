@@ -1,6 +1,6 @@
-defmodule AdventOfCode2021.CustomCustomsTest do
+defmodule AdventOfCode2020.CustomCustomsTest do
   use ExUnit.Case
-  alias AdventOfCode2021.CustomCustoms
+  alias AdventOfCode2020.CustomCustoms
 
   test "should parse information from a group" do
     expected = basic_input()

@@ -1,4 +1,4 @@
-defmodule AdventOfCode2021.TobogganTrajectory do
+defmodule AdventOfCode2020.TobogganTrajectory do
   @default_coordinates [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}]
 
   def process(text) do

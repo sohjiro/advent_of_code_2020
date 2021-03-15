@@ -1,6 +1,6 @@
-defmodule AdventOfCode2021.PasswordPhilosofyTest do
+defmodule AdventOfCode2020.PasswordPhilosofyTest do
   use ExUnit.Case
-  alias AdventOfCode2021.PasswordPhilosofy
+  alias AdventOfCode2020.PasswordPhilosofy
 
   test "extract password information" do
     basic_input()
