@@ -76,6 +76,14 @@ defmodule AdventOfCode2021 do
     |> AdventOfCode2021.BinaryBoarding.process()
   end
 
+  def run_day_five_two(input_path \\ "day_05_input.txt") do
+    @resources
+    |> Path.join(input_path)
+    |> read_file()
+    |> parse(trim: true)
+    |> AdventOfCode2021.BinaryBoarding.process_two()
+  end
+
   def run_day_six_one(input_path \\ "day_06_input.txt") do
     @resources
     |> Path.join(input_path)

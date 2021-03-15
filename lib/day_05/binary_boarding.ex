@@ -16,6 +16,23 @@ defmodule AdventOfCode2021.BinaryBoarding do
     |> highest_seat_id()
   end
 
+  def process_two(input) do
+    passenger_seats =
+      input
+      |> compute_rows()
+      |> compute_cols()
+      |> compute_id_seats()
+      |> Enum.map(fn{id, _, _, _} -> id end)
+      |> MapSet.new()
+
+    start = Enum.min(passenger_seats)
+    last = Enum.max(passenger_seats)
+
+    start..last
+    |> MapSet.new()
+    |> MapSet.difference(passenger_seats)
+  end
+
   def compute_rows(list) do
     Enum.map(list, &add_row_number/1)
   end
