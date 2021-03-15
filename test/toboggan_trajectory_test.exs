@@ -26,6 +26,22 @@ defmodule AdventOfCode2021.TobogganTrajectoryTest do
     |> validate_result(7)
   end
 
+  test "prepare coordinates for steps larger that one" do
+    basic_input()
+    |> TobogganTrajectory.prepare_coordinates(1, 2)
+    |> validate_result(expected_large_coordinates())
+  end
+
+  test "should count all the trees that were recollected for second part" do
+    coordinates = [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}]
+
+    basic_input()
+    |> TobogganTrajectory.process_multiple_coordinates(coordinates)
+    |> validate_result([2, 7, 3, 4, 2])
+    |> TobogganTrajectory.total_of_trees_for_multiple()
+    |> validate_result(336)
+  end
+
   defp basic_input do
     [
       "..##.........##.........##.........##.........##.........##.......",
@@ -44,7 +60,14 @@ defmodule AdventOfCode2021.TobogganTrajectoryTest do
 
   defp expected_coordinates do
     {
-      [{1, 3}, {2, 6}, {3, 9}, {4, 12}, {5, 15}, {6, 18}, {7, 21}, {8, 24}, {9, 27}, {10, 30}, {11, 33}],
+      [{3, 1}, {6, 2}, {9, 3}, {12, 4}, {15, 5}, {18, 6}, {21, 7}, {24, 8}, {27, 9}, {30, 10}, {33, 11}],
+      grid()
+    }
+  end
+
+  defp expected_large_coordinates do
+    {
+      [{1, 2}, {2, 4}, {3, 6}, {4, 8}, {5, 10}, {6, 12}, {7, 14}, {8, 16}, {9, 18}, {10, 20}, {11, 22}],
       grid()
     }
   end
@@ -52,7 +75,7 @@ defmodule AdventOfCode2021.TobogganTrajectoryTest do
   defp expected_results_with_elements do
     {
       [?., ?#, ?., ?#, ?#, ?., ?#, ?#, ?#, ?#, ?.],
-      [{1, 3}, {2, 6}, {3, 9}, {4, 12}, {5, 15}, {6, 18}, {7, 21}, {8, 24}, {9, 27}, {10, 30}, {11, 33}],
+      [{3, 1}, {6, 2}, {9, 3}, {12, 4}, {15, 5}, {18, 6}, {21, 7}, {24, 8}, {27, 9}, {30, 10}, {33, 11}],
       grid()
     }
   end

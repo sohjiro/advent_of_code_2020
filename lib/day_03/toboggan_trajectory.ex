@@ -1,4 +1,5 @@
 defmodule AdventOfCode2021.TobogganTrajectory do
+  @default_coordinates [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}]
 
   def process(text) do
     text
@@ -7,21 +8,43 @@ defmodule AdventOfCode2021.TobogganTrajectory do
     |> total_of_trees()
   end
 
+  def process_two(text, coordinates \\ @default_coordinates) do
+    text
+    |> process_multiple_coordinates(coordinates)
+    |> total_of_trees_for_multiple()
+  end
+
+  def process_multiple_coordinates(input, coordinates) do
+    coordinates
+    |> Enum.map(fn({right, down}) ->
+      input
+      |> prepare_coordinates(right, down)
+      |> fetch_elements()
+      |> total_of_trees()
+    end)
+  end
+
+  def total_of_trees_for_multiple(trees) do
+    Enum.reduce(trees, fn(tree, acc) -> tree * acc end)
+  end
+
   def prepare_coordinates(input, right \\ 3, down \\ 1) do
     grid = Stream.map(input, &to_stream/1)
 
     coordinates =
       grid
-      |> Stream.with_index()
-      |> Stream.map(&calculate_coordinate(&1, right, down))
-      |> Enum.to_list()
+      |> Enum.reduce([{0, 0}], &calculate_coordinate(&1, &2, right, down))
+      |> Enum.reverse()
+      |> tl()
 
     {coordinates, Enum.to_list(grid)}
   end
 
-  defp calculate_coordinate({_fun_data, index}, right, down) do
-    row = index + down
-    {row, row * right}
+  defp calculate_coordinate(_fun_data, [{x, y} | _t] = acc, right, down) do
+    # IO.inspect {x, y, down, right}
+    row = y + down
+    col = x + right
+    [{col, row} | acc]
   end
 
   def fetch_elements({coordinates, grid}) do
@@ -39,7 +62,7 @@ defmodule AdventOfCode2021.TobogganTrajectory do
     |> Enum.count()
   end
 
-  defp get_element_from_grid({row, col}, grid) do
+  defp get_element_from_grid({col, row}, grid) do
     grid
     |> Enum.at(row, Stream.cycle('.'))
     |> Enum.at(col)
@@ -50,6 +73,5 @@ defmodule AdventOfCode2021.TobogganTrajectory do
     |> to_charlist()
     |> Stream.cycle()
   end
-
 
 end

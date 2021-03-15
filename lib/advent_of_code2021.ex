@@ -44,6 +44,14 @@ defmodule AdventOfCode2021 do
     |> AdventOfCode2021.TobogganTrajectory.process()
   end
 
+  def run_day_three_two(input_path \\ "day_03_input.txt") do
+    @resources
+    |> Path.join(input_path)
+    |> read_file()
+    |> parse(trim: true)
+    |> AdventOfCode2021.TobogganTrajectory.process_two()
+  end
+
   def run_day_four_one(input_path \\ "day_04_input.txt") do
     @resources
     |> Path.join(input_path)
