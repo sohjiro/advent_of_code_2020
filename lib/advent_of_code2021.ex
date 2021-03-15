@@ -12,6 +12,14 @@ defmodule AdventOfCode2021 do
     |> AdventOfCode2021.ReportRepair.process()
   end
 
+  def run_day_one_two(input_path \\ "day_01_input.txt") do
+    @resources
+    |> Path.join(input_path)
+    |> read_file()
+    |> parse(trim: true)
+    |> AdventOfCode2021.ReportRepair.process_two()
+  end
+
   def run_day_two_one(input_path \\ "day_02_input.txt") do
     @resources
     |> Path.join(input_path)
