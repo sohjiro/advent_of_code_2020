@@ -41,10 +41,7 @@ defmodule AdventOfCode2021.TobogganTrajectory do
   end
 
   defp calculate_coordinate(_fun_data, [{x, y} | _t] = acc, right, down) do
-    # IO.inspect {x, y, down, right}
-    row = y + down
-    col = x + right
-    [{col, row} | acc]
+    [{x + right, y + down} | acc]
   end
 
   def fetch_elements({coordinates, grid}) do
