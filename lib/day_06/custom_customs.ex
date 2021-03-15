@@ -1,4 +1,4 @@
-defmodule AdventOfCode2021.CustomCustomsOne do
+defmodule AdventOfCode2021.CustomCustoms do
 
   def process(text) do
     text

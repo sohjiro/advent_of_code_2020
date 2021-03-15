@@ -1,12 +1,12 @@
-defmodule AdventOfCode2021.CustomCustoms01Test do
+defmodule AdventOfCode2021.CustomCustomsTest do
   use ExUnit.Case
-  alias AdventOfCode2021.CustomCustomsOne
+  alias AdventOfCode2021.CustomCustoms
 
   test "should parse information from a group" do
     expected = basic_input()
 
     two_groups_input()
-    |> CustomCustomsOne.generate_groups()
+    |> CustomCustoms.generate_groups()
     |> validate_result([expected, [""], expected])
   end
 
@@ -14,9 +14,9 @@ defmodule AdventOfCode2021.CustomCustoms01Test do
     expected = ["abcx", "abcy", "abcz"]
 
     basic_input()
-    |> CustomCustomsOne.generate_groups()
+    |> CustomCustoms.generate_groups()
     |> validate_result([expected])
-    |> CustomCustomsOne.count_yes_answers_per_group()
+    |> CustomCustoms.count_yes_answers_per_group()
     |> validate_result([6])
   end
 
@@ -24,11 +24,11 @@ defmodule AdventOfCode2021.CustomCustoms01Test do
     expected = ["abcx", "abcy", "abcz"]
 
     two_groups_input()
-    |> CustomCustomsOne.generate_groups()
+    |> CustomCustoms.generate_groups()
     |> validate_result([expected, [""], expected])
-    |> CustomCustomsOne.count_yes_answers_per_group()
+    |> CustomCustoms.count_yes_answers_per_group()
     |> validate_result([6, 0, 6])
-    |> CustomCustomsOne.total_yes_answers()
+    |> CustomCustoms.total_yes_answers()
     |> validate_result(12)
   end
 

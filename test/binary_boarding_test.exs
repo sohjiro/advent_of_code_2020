@@ -1,4 +1,4 @@
-defmodule AdventOfCode2021.ReportRepairTest do
+defmodule AdventOfCode2021.BinaryBoardingTest do
   use ExUnit.Case
   alias AdventOfCode2021.BinaryBoarding
 

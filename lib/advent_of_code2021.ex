@@ -49,7 +49,7 @@ defmodule AdventOfCode2021 do
     |> Path.join(input_path)
     |> read_file()
     |> parse()
-    |> AdventOfCode2021.CustomCustomsOne.process()
+    |> AdventOfCode2021.CustomCustoms.process()
   end
 
   defp read_file(input_path) do
