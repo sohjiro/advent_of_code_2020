@@ -100,6 +100,14 @@ defmodule AdventOfCode2020 do
     |> AdventOfCode2020.CustomCustoms.process_two()
   end
 
+  def run_day_seven_one(input_path \\ "day_07_input.txt") do
+    @resources
+    |> Path.join(input_path)
+    |> read_file()
+    |> parse(trim: true)
+    |> AdventOfCode2020.HandyHaversacks.process()
+  end
+
   defp read_file(input_path) do
     File.read!(input_path)
   end

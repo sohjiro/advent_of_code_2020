@@ -58,4 +58,3 @@ defmodule AdventOfCode2020.CustomCustoms do
   end
 
 end
-
