@@ -26,6 +26,34 @@ defmodule AdventOfCode2020.HandyHaversacksTest do
     |> validate_result(4)
   end
 
+  test "total of bags that contains a shiny bag" do
+    bags =
+    input()
+    |> HandyHaversacks.convert()
+    |> validate_result(expected_parse())
+    |> HandyHaversacks.extract_bags_for_shiny_bag()
+    |> validate_result(expected_contained_bags())
+
+    bags
+    |> HandyHaversacks.traverse_elements("faded blue")
+    |> validate_result(0)
+
+    bags
+    |> Map.put("vibrant shiny", %{"faded blue" => 5})
+    |> HandyHaversacks.traverse_elements("vibrant shiny")
+    |> validate_result(5)
+
+    bags
+    |> HandyHaversacks.traverse_elements()
+    |> validate_result(32)
+
+    other_input()
+    |> HandyHaversacks.convert()
+    |> HandyHaversacks.extract_bags_for_shiny_bag()
+    |> HandyHaversacks.traverse_elements()
+    |> validate_result(126)
+  end
+
   defp input do
     [
       "light red bags contain 1 bright white bag, 2 muted yellow bags.",
@@ -37,6 +65,18 @@ defmodule AdventOfCode2020.HandyHaversacksTest do
       "vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.",
       "faded blue bags contain no other bags.",
       "dotted black bags contain no other bags."
+    ]
+  end
+
+  defp other_input do
+    [
+      "shiny gold bags contain 2 dark red bags.",
+      "dark red bags contain 2 dark orange bags.",
+      "dark orange bags contain 2 dark yellow bags.",
+      "dark yellow bags contain 2 dark green bags.",
+      "dark green bags contain 2 dark blue bags.",
+      "dark blue bags contain 2 dark violet bags.",
+      "dark violet bags contain no other bags."
     ]
   end
 
@@ -56,6 +96,16 @@ defmodule AdventOfCode2020.HandyHaversacksTest do
 
   defp expected_bags do
     {expected_parse(), ["bright white", "dark orange", "light red", "muted yellow"]}
+  end
+
+  defp expected_contained_bags do
+    %{
+      "shiny gold" => %{"dark olive" => 1, "vibrant plum" => 2},
+      "dark olive" => %{"faded blue" => 3, "dotted black" => 4},
+      "vibrant plum" => %{"faded blue" => 5, "dotted black" => 6},
+      "faded blue" => %{},
+      "dotted black" => %{}
+    }
   end
 
   defp validate_result(result, expected) do
