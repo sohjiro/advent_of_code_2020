@@ -9,6 +9,12 @@ defmodule AdventOfCode2020.HandyHaversacks do
     |> total_of_bags()
   end
 
+  def process_two(text) do
+    text
+    |> convert()
+    |> total_of_shiny_bags()
+  end
+
   def convert(text) do
     text
     |> split_line()
@@ -19,13 +25,7 @@ defmodule AdventOfCode2020.HandyHaversacks do
     {bags, search_bags(bags, [@bag_name], [])}
   end
 
-  def extract_bags_for_shiny_bag(bags) do
-    bags
-    |> fetch_bag_names([@bag_name], [])
-    |> Map.merge(Map.take(bags, [@bag_name]))
-  end
-
-  def traverse_elements(bags, bag_name \\ @bag_name) do
+  def total_of_shiny_bags(bags, bag_name \\ @bag_name) do
     nested_data(bags, bag_name)
   end
 
@@ -87,27 +87,11 @@ defmodule AdventOfCode2020.HandyHaversacks do
     String.split(string, pattern, opts)
   end
 
-  defp fetch_bag_names(bags, [], acc), do: Map.take(bags, acc)
-
-  defp fetch_bag_names(bags, names, acc) do
-    bag_names =
-      bags
-      |> Map.take(names)
-      |> Map.values()
-      |> Enum.flat_map(&Map.keys/1)
-      |> Enum.uniq()
-
-    fetch_bag_names(bags, bag_names, Enum.concat(names, acc))
-  end
-
   defp nested_data(bags, bag_name) do
     bags
     |> Map.get(bag_name)
-    |> Map.to_list()
     |> reduce_nodes(bags)
   end
-
-  defp reduce_nodes([], _bags), do: 0
 
   defp reduce_nodes(nodes, bags) do
     Enum.reduce(nodes, 0, fn({name, qty}, acc) ->

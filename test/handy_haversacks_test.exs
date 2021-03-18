@@ -28,29 +28,26 @@ defmodule AdventOfCode2020.HandyHaversacksTest do
 
   test "total of bags that contains a shiny bag" do
     bags =
-    input()
-    |> HandyHaversacks.convert()
-    |> validate_result(expected_parse())
-    |> HandyHaversacks.extract_bags_for_shiny_bag()
-    |> validate_result(expected_contained_bags())
+      input()
+      |> HandyHaversacks.convert()
+      |> validate_result(expected_parse())
 
     bags
-    |> HandyHaversacks.traverse_elements("faded blue")
+    |> HandyHaversacks.total_of_shiny_bags("faded blue")
     |> validate_result(0)
 
     bags
     |> Map.put("vibrant shiny", %{"faded blue" => 5})
-    |> HandyHaversacks.traverse_elements("vibrant shiny")
+    |> HandyHaversacks.total_of_shiny_bags("vibrant shiny")
     |> validate_result(5)
 
     bags
-    |> HandyHaversacks.traverse_elements()
+    |> HandyHaversacks.total_of_shiny_bags()
     |> validate_result(32)
 
     other_input()
     |> HandyHaversacks.convert()
-    |> HandyHaversacks.extract_bags_for_shiny_bag()
-    |> HandyHaversacks.traverse_elements()
+    |> HandyHaversacks.total_of_shiny_bags()
     |> validate_result(126)
   end
 
@@ -96,16 +93,6 @@ defmodule AdventOfCode2020.HandyHaversacksTest do
 
   defp expected_bags do
     {expected_parse(), ["bright white", "dark orange", "light red", "muted yellow"]}
-  end
-
-  defp expected_contained_bags do
-    %{
-      "shiny gold" => %{"dark olive" => 1, "vibrant plum" => 2},
-      "dark olive" => %{"faded blue" => 3, "dotted black" => 4},
-      "vibrant plum" => %{"faded blue" => 5, "dotted black" => 6},
-      "faded blue" => %{},
-      "dotted black" => %{}
-    }
   end
 
   defp validate_result(result, expected) do
