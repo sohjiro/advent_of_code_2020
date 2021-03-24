@@ -93,8 +93,11 @@ defmodule AdventOfCode2020.HandyHaversacks do
     |> reduce_nodes(bags)
   end
 
-  defp reduce_nodes(nodes, bags) do
+  def reduce_nodes(nodes, bags) do
     Enum.reduce(nodes, 0, fn({name, qty}, acc) ->
+      # quote do
+      #   (unquote(qty) + unquote(qty) * unquote(nested_data(bags, name))) + unquote(acc)
+      # end
       (qty + qty * nested_data(bags, name)) + acc
     end)
   end
