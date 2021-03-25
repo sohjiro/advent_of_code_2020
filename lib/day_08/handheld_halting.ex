@@ -1,5 +1,6 @@
 defmodule AdventOfCode2020.HandheldHalting do
   @index 0
+  @filtering_instructions ~w[nop jmp]
 
   def process(input) do
     input
@@ -7,8 +8,28 @@ defmodule AdventOfCode2020.HandheldHalting do
     |> accumulator_value()
   end
 
+  def process_two(input) do
+    input
+    |> fix_instructions()
+    |> accumulator_for_fixed_values()
+  end
+
   def process_instructions(instructions) do
     follow_instructions(instructions, @index, [], 0)
+  end
+
+  def fix_instructions(instructions) do
+    filters = jmp_nop_instructions(instructions)
+    for {instruction, index} <- filters do
+      instructions
+      |> List.replace_at(index, invert_instruction(instruction))
+      |> follow_instructions(@index, [], 0)
+    end
+  end
+
+  def accumulator_for_fixed_values(instructions) do
+    {:done, _, _, _, acc} = List.keyfind(instructions, :done, 0)
+    acc
   end
 
   def accumulator_value({_, _, _, acc}), do: acc
@@ -32,10 +53,14 @@ defmodule AdventOfCode2020.HandheldHalting do
     {instruction, String.to_integer(rest)}
   end
 
-  defp convert_instruction(_), do: :stop
+  defp convert_instruction(_), do: :done
 
   defp execute(:stop, instructions, index, marked, acc) do
     {instructions, index, marked, acc}
+  end
+
+  defp execute(:done, instructions, index, marked, acc) do
+    {:done, instructions, index, marked, acc}
   end
 
   defp execute({command, value}, instructions, index, marked, acc) do
@@ -50,5 +75,18 @@ defmodule AdventOfCode2020.HandheldHalting do
         follow_instructions(instructions, index + value, [index | marked], acc)
     end
   end
+
+  defp jmp_nop_instructions(instructions) do
+    instructions
+    |> Stream.with_index()
+    |> Stream.filter(&contains_filtering_instructions?/1)
+  end
+
+  defp contains_filtering_instructions?({instruction, _index}) do
+    String.slice(instruction, 0, 3) in @filtering_instructions
+  end
+
+  def invert_instruction("nop" <> rest), do: "jmp" <> rest
+  def invert_instruction("jmp" <> rest), do: "nop" <> rest
 
 end
