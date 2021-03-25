@@ -3,125 +3,66 @@ defmodule AdventOfCode2020 do
   Documentation for `AdventOfCode2020`.
   """
   @resources "lib/resources"
+  @available_process ~w[process process_two]a
 
-  def run_day_one_one(input_path \\ "day_01_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.ReportRepair.process()
+  def run_day(day, part) when part in @available_process do
+    string_day = into_string(day)
+    {module, opts} = solution_for(string_day)
+    input = input_data_for(string_day, opts)
+
+    apply(module, part, [input])
   end
 
-  def run_day_one_two(input_path \\ "day_01_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.ReportRepair.process_two()
+  defp into_string(day) do
+    day
+    |> to_string()
+    |> String.pad_leading(2, "0")
   end
 
-  def run_day_two_one(input_path \\ "day_02_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.PasswordPhilosofy.process()
+  defp solution_for(string_day) do
+    Map.get(avaliable_solutions(), string_day)
   end
 
-  def run_day_two_two(input_path \\ "day_02_input.txt") do
-    @resources
-    |> Path.join(input_path)
+  defp input_data_for(string_day, opts) do
+    string_day
+    |> resources()
     |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.PasswordPhilosofy.process_two()
+    |> parse(opts)
   end
 
-  def run_day_three_one(input_path \\ "day_03_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.TobogganTrajectory.process()
+  defp resources(day_number) do
+    day_number
+    |> generate_file_name()
+    |> generate_file_path()
   end
 
-  def run_day_three_two(input_path \\ "day_03_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.TobogganTrajectory.process_two()
+  defp generate_file_name(day_number) do
+    "day_" <> day_number <> "_input.txt"
   end
 
-  def run_day_four_one(input_path \\ "day_04_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse()
-    |> AdventOfCode2020.PassportProcessing.process()
-  end
-
-  def run_day_four_two(input_path \\ "day_04_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse()
-    |> AdventOfCode2020.PassportProcessing.process_two()
-  end
-
-  def run_day_five_one(input_path \\ "day_05_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.BinaryBoarding.process()
-  end
-
-  def run_day_five_two(input_path \\ "day_05_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.BinaryBoarding.process_two()
-  end
-
-  def run_day_six_one(input_path \\ "day_06_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse()
-    |> AdventOfCode2020.CustomCustoms.process()
-  end
-
-  def run_day_six_two(input_path \\ "day_06_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse()
-    |> AdventOfCode2020.CustomCustoms.process_two()
-  end
-
-  def run_day_seven_one(input_path \\ "day_07_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.HandyHaversacks.process()
-  end
-
-  def run_day_seven_two(input_path \\ "day_07_input.txt") do
-    @resources
-    |> Path.join(input_path)
-    |> read_file()
-    |> parse(trim: true)
-    |> AdventOfCode2020.HandyHaversacks.process_two()
+  defp generate_file_path(name) do
+    Path.join(@resources, name)
   end
 
   defp read_file(input_path) do
     File.read!(input_path)
   end
 
-  def parse(text, opts \\ []) do
+  defp parse(text, opts) do
     String.split(text, "\n", opts)
+  end
+
+  defp avaliable_solutions do
+    %{
+      "01" => {AdventOfCode2020.ReportRepair, trim: true},
+      "02" => {AdventOfCode2020.PasswordPhilosofy, trim: true},
+      "03" => {AdventOfCode2020.TobogganTrajectory, trim: true},
+      "04" => {AdventOfCode2020.PassportProcessing, []},
+      "05" => {AdventOfCode2020.BinaryBoarding, trim: true},
+      "06" => {AdventOfCode2020.CustomCustoms, []},
+      "07" => {AdventOfCode2020.HandyHaversacks, trim: true},
+      "08" => {AdventOfCode2020.HandheldHalting, trim: true}
+    }
   end
 
 end
