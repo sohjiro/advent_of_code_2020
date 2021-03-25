@@ -4,7 +4,7 @@ defmodule AdventOfCode2020.HandheldHalting do
   def process(input) do
     input
     |> process_instructions()
-    # |> accumulator_value()
+    |> accumulator_value()
   end
 
   def process_instructions(instructions) do
@@ -15,8 +15,8 @@ defmodule AdventOfCode2020.HandheldHalting do
 
   def follow_instructions(instructions, index, marked, acc) do
     if index in marked do
-      IO.inspect index, label: "index:"
-      IO.inspect hd(marked), label: "hd(marked):"
+      # IO.inspect index, label: "index"
+      # IO.inspect hd(marked), label: "hd(marked)"
       execute(:stop, instructions, index, marked, acc)
     else
       instructions
