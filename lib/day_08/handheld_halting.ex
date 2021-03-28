@@ -32,7 +32,7 @@ defmodule AdventOfCode2020.HandheldHalting do
     acc
   end
 
-  def accumulator_value({_, _, _, acc}), do: acc
+  def accumulator_value({_, _, _, _, acc}), do: acc
 
   def follow_instructions(instructions, index, marked, acc) do
     if index in marked do
@@ -56,7 +56,7 @@ defmodule AdventOfCode2020.HandheldHalting do
   defp convert_instruction(_), do: :done
 
   defp execute(:stop, instructions, index, marked, acc) do
-    {instructions, index, marked, acc}
+    {:stop, instructions, index, marked, acc}
   end
 
   defp execute(:done, instructions, index, marked, acc) do
