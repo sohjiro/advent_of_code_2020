@@ -61,7 +61,8 @@ defmodule AdventOfCode2020 do
       "05" => {AdventOfCode2020.BinaryBoarding, trim: true},
       "06" => {AdventOfCode2020.CustomCustoms, []},
       "07" => {AdventOfCode2020.HandyHaversacks, trim: true},
-      "08" => {AdventOfCode2020.HandheldHalting, trim: true}
+      "08" => {AdventOfCode2020.HandheldHalting, trim: true},
+      "09" => {AdventOfCode2020.EncodingError, trim: true}
     }
   end
 
