@@ -35,6 +35,16 @@ defmodule AdventOfCode2020.EncodingErrorTest do
     |> validate_result({:invalid, 127})
   end
 
+  test "find contiguous set of at least two numbers which sum the invalid number" do
+    second_input()
+    |> EncodingError.break_xmas_encryption(127)
+    |> validate_result({second_input(), 127, [40, 47, 25, 15]})
+    |> EncodingError.encryption_weakness()
+    |> validate_result({second_input(), 127, [40, 47, 25, 15], 62})
+    |> EncodingError.find_weaknes()
+    |> validate_result(62)
+  end
+
   defp input(first \\ 1, last \\ 25)do
     Enum.to_list(first..last)
   end
