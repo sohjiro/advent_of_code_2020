@@ -1,5 +1,6 @@
 defmodule AdventOfCode2020.AdapterArray do
   @adapter_jolts 3
+  @starting_node 0
 
   def process(input) do
     input
@@ -7,6 +8,14 @@ defmodule AdventOfCode2020.AdapterArray do
     |> prepare_plugs()
     |> filter_joltages()
     |> multiply_distance_one_and_three()
+  end
+
+  def process_two(input) do
+    input
+    |> Enum.map(&String.to_integer/1)
+    |> prepare_plugs()
+    |> generate_nodes()
+    # |> count_paths()
   end
 
   def prepare_plugs(input) do
@@ -27,6 +36,12 @@ defmodule AdventOfCode2020.AdapterArray do
     count_jolt_differences(one) * count_jolt_differences(three)
   end
 
+  def count_jolt_differences(chunked_list) do
+    chunked_list
+    |> Stream.map(&(&1 |> Enum.count() |> Kernel.-(1)))
+    |> Enum.sum()
+  end
+
   def one_distance_chunks(input) do
     Enum.chunk_while(input, [], &one_size_chunk_fun/2, &after_fun/1)
   end
@@ -39,10 +54,33 @@ defmodule AdventOfCode2020.AdapterArray do
     Enum.chunk_while(input, [], &three_size_chunk_fun/2, &after_fun/1)
   end
 
-  def count_jolt_differences(chunked_list) do
-    chunked_list
-    |> Stream.map(&(&1 |> Enum.count() |> Kernel.-(1)))
-    |> Enum.sum()
+  def generate_nodes(list, acc \\ %{})
+
+  def generate_nodes([], acc), do: acc
+
+  def generate_nodes([h | t], acc) do
+    # IO.puts "generate_nodes #{h}"
+    acc = Map.put_new_lazy(acc, h, fn ->
+      possible_nodes(h, t)
+    end)
+    # acc = Map.put_new(acc, h, possible_nodes(h, t))
+    # acc = Map.put(acc, h, possible_nodes(h, t))
+
+    generate_nodes(t, acc)
+  end
+
+  def count_paths(nodes, node \\ @starting_node) do
+    nodes
+    |> Map.get(node)
+    |> paths_for(nodes)
+  end
+
+  defp possible_nodes(element, remaining) do
+    # IO.inspect "element: #{element}"
+    [element + 1, element + 2, element + 3]
+    |> MapSet.new()
+    |> MapSet.intersection(MapSet.new(remaining))
+    |> MapSet.to_list()
   end
 
   defp one_size_chunk_fun(element, []), do: {:cont, [element]}
@@ -59,5 +97,14 @@ defmodule AdventOfCode2020.AdapterArray do
 
   defp after_fun([]), do: {:cont, []}
   defp after_fun(acc), do: {:cont, Enum.reverse(acc), []}
+
+  defp paths_for([], _nodes), do: 1
+
+  defp paths_for(paths, nodes) do
+    IO.inspect paths, label: "paths"
+    Enum.reduce(paths, 0, fn(path, acc) ->
+      acc + count_paths(nodes, path)
+    end)
+  end
 
 end

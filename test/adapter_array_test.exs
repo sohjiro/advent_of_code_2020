@@ -44,6 +44,46 @@ defmodule AdventOfCode2020.AdapterArrayTest do
     |> validate_result(220)
   end
 
+  test "create nodes for elements" do
+    [0, 1]
+    |> AdapterArray.generate_nodes()
+    |> validate_result(expected_nodes())
+
+    [0, 1, 4]
+    |> AdapterArray.generate_nodes()
+    |> validate_result(expected_multipe_nodes())
+
+    input()
+    |> AdapterArray.prepare_plugs()
+    |> validate_result(expected_joltages())
+    |> AdapterArray.generate_nodes()
+    |> validate_result(expected_input_nodes())
+  end
+
+  test "count nodes" do
+    expected_nodes()
+    |> AdapterArray.count_paths()
+    |> validate_result(1)
+
+    expected_multipe_nodes()
+    |> AdapterArray.count_paths()
+    |> validate_result(1)
+
+    %{0 => [1], 1 => [4], 4 => [5, 6, 7], 5 => [], 6 => [], 7 => []}
+    |> AdapterArray.count_paths()
+    |> validate_result(3)
+
+    expected_input_nodes()
+    |> AdapterArray.count_paths()
+    |> validate_result(8)
+
+    larger_input()
+    |> AdapterArray.prepare_plugs()
+    |> AdapterArray.generate_nodes()
+    |> AdapterArray.count_paths()
+    |> validate_result(19208)
+  end
+
   defp input do
     [16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4]
   end
@@ -123,6 +163,54 @@ defmodule AdventOfCode2020.AdapterArrayTest do
       ]
     }
   end
+
+  defp expected_nodes, do: %{0 => [1], 1 => []}
+
+  defp expected_multipe_nodes, do: %{0 => [1], 1 => [4], 4 => []}
+
+  defp expected_input_nodes do
+    %{
+      0 => [1],
+      1 => [4],
+      4 => [5, 6, 7],
+      5 => [6, 7],
+      6 => [7],
+      7 => [10],
+      10 => [11, 12],
+      11 => [12],
+      12 => [15],
+      15 => [16],
+      16 => [19],
+      19 => [22],
+      22 => []
+    }
+  end
+
+  # 0 => 1
+  # 1 => 1
+  # 4 => 3
+  # 5 => 2
+  # 6 => 1
+  # 7 => 1
+  # 10 => 2
+  # 11 => 1,
+  # 12 => 1,
+  # 15 => 1,
+  # 16 => 1,
+  # 19 => 1,
+
+  # 0 + (paths_for(0)) + acc
+  # 0 + (0 + paths_for(1)) + acc
+  # 0 + (0 + (0 + paths_for([]))) + acc
+  # 0 + (0 + (0 + (0 + 1))) + acc
+
+  # 1 * (paths_for(0)) + acc
+
+  # 0 + (paths_for(0)) + acc
+  # 0 + (0 + paths_for(1)) + acc
+  # 0 + (0 + (0 + paths_for(2) + paths_for(3) + paths_for(4))) + acc
+  # 0 + (0 + (0 + (0 + paths_for([])) + (0 + paths_for([])) + (0 + paths_for([])))) + acc
+  # 0 + (0 + (0 + (0 + 1) + (0 + 1) + (0 + 1))) + acc
 
   defp validate_result(result, expected) do
     assert expected == result
