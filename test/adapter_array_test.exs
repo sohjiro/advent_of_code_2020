@@ -84,6 +84,44 @@ defmodule AdventOfCode2020.AdapterArrayTest do
     |> validate_result(19208)
   end
 
+  test "generate children's paths" do
+    expected_input_nodes()
+    |> AdapterArray.children_paths_total(22)
+    |> validate_result(%{22 => 1})
+
+    expected_input_nodes()
+    |> AdapterArray.children_paths_total(19, %{22 => 1})
+    |> validate_result(Map.take(expected_total_children_paths(), [19, 22]))
+
+    expected_input_nodes()
+    |> AdapterArray.children_paths_total(16, Map.take(expected_total_children_paths(), [19, 22]))
+    |> validate_result( Map.take(expected_total_children_paths(), [16, 19, 22]))
+
+    expected_input_nodes()
+    |> AdapterArray.children_paths_total(4, Map.drop(expected_total_children_paths(), [0, 1, 4]))
+    |> validate_result(Map.drop(expected_total_children_paths(), [0, 1]))
+
+    expected_input_nodes()
+    |> AdapterArray.children_paths_total(0, Map.drop(expected_total_children_paths(), [0]))
+    |> validate_result(expected_total_children_paths())
+
+    input()
+    |> AdapterArray.prepare_plugs()
+    |> validate_result(expected_joltages())
+    |> AdapterArray.generate_nodes()
+    |> validate_result(expected_input_nodes())
+    |> AdapterArray.prepare_children()
+    |> validate_result(expected_total_children_paths())
+
+    larger_input()
+    |> AdapterArray.prepare_plugs()
+    |> validate_result(expected_larger_input())
+    |> AdapterArray.generate_nodes()
+    |> AdapterArray.prepare_children()
+    |> Map.get(0)
+    |> validate_result(19_208)
+  end
+
   defp input do
     [16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4]
   end
@@ -170,41 +208,82 @@ defmodule AdventOfCode2020.AdapterArrayTest do
 
   defp expected_input_nodes do
     %{
-      0 => [1],
-      1 => [4],
-      4 => [5, 6, 7],
-      5 => [6, 7],
-      6 => [7],
-      7 => [10],
-      10 => [11, 12],
-      11 => [12],
-      12 => [15],
-      15 => [16],
-      16 => [19],
-      19 => [22],
+      0 => [1], # 0
+      1 => [4], # 0
+      4 => [5, 6, 7], # 1 + paths_for(5) + 1 + paths_for(6) + 1 + paths_for(7)
+      5 => [6, 7],    # 1 + paths_for(6) + 1 + paths_for(7)
+      6 => [7],       # 0
+      7 => [10],      # 0
+      10 => [11, 12], # 1 + paths_for(11) + 1 + paths_for(12)
+      11 => [12],     # 0
+      12 => [15],     # 0
+      15 => [16],     # 0
+      16 => [19],     # 0
+      19 => [22],     # 0
       22 => []
     }
   end
 
-  # 0 => 1
-  # 1 => 1
-  # 4 => 3
-  # 5 => 2
-  # 6 => 1
-  # 7 => 1
-  # 10 => 2
-  # 11 => 1,
-  # 12 => 1,
-  # 15 => 1,
-  # 16 => 1,
-  # 19 => 1,
+  defp expected_total_children_paths do
+    %{0 => 8, 1 => 8, 4 => 8, 5 => 4, 6 => 2, 7 => 2, 10 => 2, 11 => 1, 12 => 1, 15 => 1, 16 => 1, 19 => 1, 22 => 1}
+  end
+
+  # 0 => [paths_for(1)]
+  # 1 => [paths_for(4)]
+  # 4 => [paths_for(5), paths_for(6), paths_for(7)]
+  # 5 => [paths_for(6), paths_for(7)
+  # 6 => [paths_for(7)]
+  # 7 => [paths_for(10)]
+  # 10 => [paths_for(11), paths_for(12)]
+  # 11 => [paths_for(12)],
+  # 12 => [paths_for(15)],
+  # 15 => [paths_for(16)],
+  # 16 => [paths_for(19)],
+  # 19 => [paths_for(22)],
+  # 22 => [],
+
+  # 0 => [paths_for(1)]
+  # 1 => [paths_for(4)]
+  # 4 => [[4 | paths(5)], [4 | paths_for(6)], [4 | paths_for(7)}]
+  # 5 => [
+  #   [6, 7, 10, 11, 12, 15, 16, 19, 22],
+  #   [6, 7, 10, 12, 15, 16, 19, 22],
+  #   [7, 10, 11, 12, 15, 16, 19, 22],
+  #   [7, 10, 12, 15, 16, 19, 22]
+  # ]
+  # 6 => [
+  #   [7, 10, 11, 12, 15, 16, 19, 22],
+  #   [7, 10, 12, 15, 16, 19, 22]
+  # ]
+  # 7 => [
+  #   [10, 11, 12, 15, 16, 19, 22],
+  #   [10, 12, 15, 16, 19, 22]
+  # ]
+  # 10 => [
+  #   [11, 12, 15, 16, 19, 22],
+  #   [12, 15, 16, 19, 22]
+  # ]
+  # 11 => [
+  #   [11, 12, 15, 16, 19, 22]
+  # ],
+  # 12 => [
+  #   [12, 15, 16, 19, 22]
+  # ],
+  # 15 => [
+  #   [15, 16, 19, 22]
+  # ],
+  # 16 => [
+  #   [16, 19, 22]
+  # ],
+  # 19 => [
+  #   [19, 22]
+  # ],
+  # 22 => [],
 
   # 0 + (paths_for(0)) + acc
   # 0 + (0 + paths_for(1)) + acc
   # 0 + (0 + (0 + paths_for([]))) + acc
   # 0 + (0 + (0 + (0 + 1))) + acc
-
-  # 1 * (paths_for(0)) + acc
 
   # 0 + (paths_for(0)) + acc
   # 0 + (0 + paths_for(1)) + acc
@@ -213,7 +292,7 @@ defmodule AdventOfCode2020.AdapterArrayTest do
   # 0 + (0 + (0 + (0 + 1) + (0 + 1) + (0 + 1))) + acc
 
   defp validate_result(result, expected) do
-    assert expected == result
+    assert result === expected
     result
   end
 end

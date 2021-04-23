@@ -23,7 +23,7 @@ defmodule AdventOfCode2020.EncodingError do
 
   def xmas_verify(list, slice) do
     {current_list, to_test} = Enum.split(list, slice)
-    run_verification(current_list, to_test, slice)
+    run_verification(Enum.reverse(current_list), to_test, slice)
   end
 
   def xmas_valid_number?(list, number) do
@@ -45,12 +45,12 @@ defmodule AdventOfCode2020.EncodingError do
 
   def find_weaknes({_input, _number, _elements, weakness}), do: weakness
 
-  defp run_verification(current_list, [], _slice), do: {:valid, current_list}
+  defp run_verification(current_list, [], _slice), do: {:valid, Enum.reverse(current_list)}
   defp run_verification(current_list, [number | t], slice) do
-    list = Enum.slice(current_list, slice * -1, slice)
+    list = Enum.slice(current_list, 0, slice)
 
     if xmas_valid_number?(list, number) do
-      run_verification(current_list ++ [number], t, slice)
+      run_verification([number | current_list], t, slice)
     else
       {:invalid, number}
     end

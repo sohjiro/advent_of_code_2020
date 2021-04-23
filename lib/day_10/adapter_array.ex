@@ -15,7 +15,8 @@ defmodule AdventOfCode2020.AdapterArray do
     |> Enum.map(&String.to_integer/1)
     |> prepare_plugs()
     |> generate_nodes()
-    # |> count_paths()
+    |> prepare_children()
+    |> total_childs()
   end
 
   def prepare_plugs(input) do
@@ -68,6 +69,41 @@ defmodule AdventOfCode2020.AdapterArray do
 
     generate_nodes(t, acc)
   end
+
+  def prepare_children(nodes) do
+    nodes
+    |> Map.keys()
+    |> Enum.sort(&(&1 >= &2))
+    |> Enum.reduce(%{}, fn(key, acc) ->
+      children_paths_total(nodes, key, acc)
+    end)
+  end
+
+  def children_paths_total(nodes, node \\ @starting_node, acc \\ %{}) do
+    case Map.get(acc, node) do
+      nil ->
+        nodes
+        |> Map.get(node)
+        |> count_children_paths(node, nodes, acc)
+      other ->
+        other
+    end
+  end
+
+  defp count_children_paths([], node, _nodes, acc), do: Map.put(acc, node, 1)
+
+  defp count_children_paths(values, node, nodes, acc) do
+    total_paths =
+      values
+      |> Enum.map(fn(value) ->
+        children_paths_total(nodes, value, acc)
+      end)
+      |> Enum.sum()
+
+    Map.put(acc, node, total_paths)
+  end
+
+  defp total_childs(nodes), do: Map.get(nodes, @starting_node)
 
   def count_paths(nodes, node \\ @starting_node) do
     nodes
