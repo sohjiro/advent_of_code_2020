@@ -105,12 +105,6 @@ defmodule AdventOfCode2020.AdapterArray do
 
   defp total_childs(nodes), do: Map.get(nodes, @starting_node)
 
-  def count_paths(nodes, node \\ @starting_node) do
-    nodes
-    |> Map.get(node)
-    |> paths_for(nodes)
-  end
-
   defp possible_nodes(element, remaining) do
     # IO.inspect "element: #{element}"
     [element + 1, element + 2, element + 3]
@@ -133,14 +127,5 @@ defmodule AdventOfCode2020.AdapterArray do
 
   defp after_fun([]), do: {:cont, []}
   defp after_fun(acc), do: {:cont, Enum.reverse(acc), []}
-
-  defp paths_for([], _nodes), do: 1
-
-  defp paths_for(paths, nodes) do
-    IO.inspect paths, label: "paths"
-    Enum.reduce(paths, 0, fn(path, acc) ->
-      acc + count_paths(nodes, path)
-    end)
-  end
 
 end
